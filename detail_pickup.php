@@ -62,8 +62,7 @@ if ($_SESSION['status']!="login") {
                 <div class="col-md-12">
                     <div class="navbar-collapse collapse ">
                         <ul id="menu-top" class="nav navbar-nav navbar-left">
-                            <?php $url = isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER']) : ''; ?>
-                            <li><a href="<?=$url?>">KEMBALI</a></li>
+                            <li><a href="pickup.php">KEMBALI</a></li>
                         </ul>
                     </div>
                 </div>
@@ -81,7 +80,7 @@ if ($_SESSION['status']!="login") {
                     <div class="txt-block">
 
 
-                        <h1 class="head-line"> DETAIL LAPORAN TRANSAKSI PEMBELIAN</h1>
+                        <h1 class="head-line"> DETAIL PICKUP</h1>
 
                     </div>
                 </div>
@@ -91,47 +90,31 @@ if ($_SESSION['status']!="login") {
     </div>
     <!-- BELOW SLIDESHOW SECTION END-->
     <div class="container">
-        <div class="row">
-            <div>
-                </br></br>
-                <table border="1" class="table table-bordered">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th class="tbl text-center">No</th>
-                            <th class="tbl text-center">KODE TRANSAKSI</th>
-                            <th class="tbl text-center">NAMA SAMPAH</th>
-                            <th class="tbl text-center">JUMLAH SAMPAH</th>
-                            <th class="tbl text-center">POINT</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <?php
-                            include 'koneksi.php';
-                            $data = $_GET['kode_transaksi'];
-                            $sql = "SELECT * FROM laporan_beli where kode_transaksi = '$data'";
-                            $hasil = mysqli_query($koneksi,$sql);
-                            $nomer = 1;
-                            while($data = mysqli_fetch_array($hasil,MYSQLI_ASSOC)){
-                            ?>
-
-                        <tr>
-                            <td class="no text-center"><?php echo $nomer++; ?></td>
-                            <td><?php echo $data['kode_transaksi']; ?></td>
-                            <td><?php echo $data['nama_sampah']; ?></td>
-                            <td><?php echo $data['jumlah_sampah']; ?></td>
-                            <td><?php echo $data['point']; ?></td>
-                        </tr>
-
-                        <?php 
-                            }
-                            ?>
-                    </tbody>
-                </table>
-                </br></br>
-                <hr>
+        <?php
+        include 'koneksi.php';
+        $data = $_GET['id_pengantaran'];
+        $sql = "SELECT `gambar1`, `gambar2`, `gambar3` FROM `pickup` WHERE id_pengantaran = '$data';";
+        $hasil = mysqli_query($koneksi,$sql);
+        while($data = mysqli_fetch_array($hasil,MYSQLI_ASSOC)){
+            ?>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="just-txt-div text-center">
+                <img src="api/uploads/<?php echo $data['gambar1']; ?>" alt="" class="img-circle set-about-img" />
             </div>
         </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="just-txt-div text-center">
+                <img src="api/uploads/<?php echo $data['gambar2']; ?>" alt="" class="img-circle set-about-img" />
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="just-txt-div text-center">
+                <img src="api/uploads/<?php echo $data['gambar3']; ?>" alt="" class="img-circle set-about-img" />
+            </div>
+        </div>
+        <?php 
+        }
+        ?>
     </div>
     <!--JUST SECTION END-->
 

@@ -20,7 +20,7 @@
     <!-- FLEXSLIDER STYLE  -->
     <link href="assets/css/flexslider.css" rel="stylesheet" />
     <!-- CUSTOM STYLE  -->
-    <link href="assets/css/style copy.css" rel="stylesheet" />
+    <link href="assets/css/style_copy.css" rel="stylesheet" />
     <!-- GOOGLE FONTS  -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
@@ -45,7 +45,7 @@ if ($_SESSION['status']!="login") {
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="home.php">
-                    <img src="assets/img/portfolio/logo.png" />
+                    <img src="assets/img/portfolio/logo1.png" />
                 </a>
 
             </div>
@@ -176,26 +176,26 @@ if ($_SESSION['status']!="login") {
     </div>
     <!--JUST SECTION END-->
 
-<div class="footer-sec">
+    <div class="footer-sec">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 social-div">
                 <h3> <strong>CONTACT PERSON</strong> </h3>
                 <br />
-                <a href="http://www.whatsapp.com/">
+                <a href="https://wa.me/6282331879753">
                     <h4>WHATSAPP: 082331879753 </h4>
                 </a>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 social-div">
                 <h3> <strong>SOCIAL MEDIA</strong> </h3>
                 <br />
-                <a href="http://www.facebook.com/">
+                <a href="https://www.facebook.com/search/top/?q=rushbin%20bank%20sampah/">
                     <h4>FACEBOOK </h4>
                 </a>
                 <a href="http://www.twitter.com/">
                     <h4>TWITTER </h4>
                 </a>
-                <a href="http://www.instagram.com/">
+                <a href="https://www.instagram.com/rushbinenterprise/">
                     <h4>INSTAGRAM </h4>
                 </a>
             </div>
@@ -230,6 +230,11 @@ if ($_SESSION['status']!="login") {
     <script src="assets/js/jquery.flexslider.js"></script>
     <!--CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
+    <!-- jquery -->
+    <script src="assets/js/jquery-3.1.0.min.js"></script>
+    <!-- jquery datatable -->
+    <script type="text/javascript" charset="utf8" src="assets/js/datatabel/media/js/jquery.dataTables.js">
+    </script>
 </body>
 
 </html>

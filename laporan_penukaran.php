@@ -68,7 +68,7 @@ if ($_SESSION['status']!="login") {
                             <li><a href="home.php">HOME</a></li>
 
                             <li><a href="transaksi.php">TRANSAKSI</a></li>
-                            <li><a href="laporan.php" class="menu-top-active" style="color:#f7f7f7;">LAPORAN</a></li>
+                            <li><a href="laporan_penukaran.php" class="menu-top-active" style="color:#f7f7f7;">LAPORAN</a></li>
                             <li><a href="pickup.php">PICKUP</a></li>
                             <li><a href="customer.php">INFORMASI CUSTOMER</a></li>
                             <li><a href="about.php">ABOUT US</a></li>
@@ -105,9 +105,9 @@ if ($_SESSION['status']!="login") {
             <div class="col-md-9" style="width: 100%;">
                 <div class="navbar-collapse collapse ">
                     <ul id="menu-top" class="nav navbar-nav navbar-left">
-                        <li><a href="laporan.php" class="menu-top-active" style="color:#f7f7f7;">LAPORAN BELI</a></li>
+                        <li><a href="laporan.php">LAPORAN BELI</a></li>
                         <li><a href="laporan_jual.php">LAPORAN JUAL</a></li>
-                        <li><a href="laporan_penukaran.php">LAPORAN PENUKARAN</a></li>
+                        <li><a href="laporan_penukaran.php" class="menu-top-active" style="color:#f7f7f7;">LAPORAN PENUKARAN</a></li>
                     </ul>
                 </div>
             </div>
@@ -119,6 +119,28 @@ if ($_SESSION['status']!="login") {
                 <div>
                     <form method="post">
                         <div>
+                </br>
+
+                <div class="warning text-center"></div>
+                <?php 
+                                if (isset($_GET['pesan'])) {
+                                    if ($_GET['pesan'] == "status_complete-succesfull") {
+                                ?>
+                <div class="warning text-center" style="color: green; font-weight: 900;">
+                    <?php echo "PENUKARAN BERHASIL"; ?>
+                </div>
+                <?php
+                                    } elseif ($_GET['pesan'] == "status_notcomplete-succesfull") {
+                                        ?>
+                        <div class="warning text-center" style="color: green; font-weight: 900;">
+                            <?php echo "PENUKARAN GAGAL"; ?>
+                        </div>
+                        <?php
+                                    }
+                                }
+                                ?>
+
+                </br>
                             </br><br><br>
                             <div class="form-group">
                                 <label for="sebelum">Dari Tanggal :</label> &ensp;
@@ -140,10 +162,9 @@ if ($_SESSION['status']!="login") {
                                         <th class="tbl text-center">KODE TRANSAKSI</th>
                                         <th class="tbl text-center">TANGGAL</th>
                                         <th class="tbl text-center">WAKTU</th>
-                                        <th class="tbl text-center">NAMA PEGAWAI</th>
                                         <th class="tbl text-center">ID PELANGGAN</th>
-                                        <th class="tbl text-center">TOTAL POINT</th>
-                                        <th class="tbl text-center">ORDER</th>
+                                        <th class="tbl text-center">POINT</th>
+                                        <th class="tbl text-center">STATUS</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -154,9 +175,9 @@ if ($_SESSION['status']!="login") {
                             if (isset($_POST['filter'])) {
                                 $sebelum = $_POST['sebelum'];
                                 $sesudah = $_POST['sesudah'];
-                                $sql = "SELECT * FROM transaksi_beli WHERE tanggal BETWEEN '$sebelum' AND '$sesudah' ORDER BY kode_transaksi DESC";
+                                $sql = "SELECT * FROM penukaran WHERE tanggal BETWEEN '$sebelum' AND '$sesudah' ORDER BY id_penukaran DESC";
                             } else {
-                                $sql = "SELECT * FROM transaksi_beli ORDER BY kode_transaksi DESC";
+                                $sql = "SELECT * FROM penukaran ORDER BY id_penukaran DESC";
                             }
                             $hasil = mysqli_query($koneksi,$sql);
                             while($data = mysqli_fetch_array($hasil,MYSQLI_ASSOC)){
@@ -164,22 +185,39 @@ if ($_SESSION['status']!="login") {
 
                                     <tr>
                                         <td class="no text-center"><?php echo $nomer++; ?></td>
-                                        <td><?php echo $data['kode_transaksi']; ?></td>
+                                        <td><?php echo $data['id_penukaran']; ?></td>
+                                        <td><?php echo $data['id_pengguna']; ?></td>
                                         <td><?php echo $data['tanggal']; ?></td>
                                         <td><?php echo $data['waktu']; ?></td>
-                                        <td><?php echo $data['nama_lengkap']; ?></td>
-                                        <td><?php echo $data['id_pengguna']; ?></td>
-                                        <td class="text_center"><?php echo $data['total_point']; ?></td>
-                                        <td class="text-center">
+                                        <td class="text_center"><?php echo $data['point']; ?></td>
+                                            <?php if ($data['status']==1) {?>
+                                        <td class="text-center" style="color: #f9b100;">
+                                                Pending</br>
                                             <a
-                                                href="detail_laporan_beli.php?kode_transaksi=<?php echo $data['kode_transaksi']; ?>">
-                                                <input type="button" class="btn btn-info btn-lg" value="Detail"></a>
+                                                href="cek_laporan_batal.php?id_penukaran=<?php echo $data['id_penukaran']; ?>">
+                                                <input type="button" class="btn btn-danger" value="Batal" style="width: 40%;"></a>
+                                            <a
+                                                href="cek_laporan_konfirmasi.php?id_penukaran=<?php echo $data['id_penukaran']; ?>">
+                                                <input type="button" class="btn btn-success" value="Konfirmasi" style="width: 40%;"></a>
                                         </td>
-                                    </tr>
+                                        <?php
+                                    } elseif ($data['status']==2) {
+                                        ?>
+                                        <td class="tbl text-center" style="color: #FF0000;">
+                                            Telah Dibatalkan
+                                        </td>
+                                        <?php
+                                    } elseif ($data['status']==3) {
+                                        ?>
+                                        <td class="tbl text-center" style="color: #00FF00;">
+                                            Telah Dikonfirmasi
+                                        </td>
+                                                </tr>
 
-                                    <?php 
-                            }
-                            ?>
+                                                <?php
+                                            } 
+                                        }
+                                        ?>
                                 </tbody>
                             </table>
                             </br></br>
